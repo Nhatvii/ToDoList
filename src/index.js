@@ -1,12 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
+// import App from './App';
 import reportWebVitals from './reportWebVitals';
+import TodoList from './Components/TodoList';
+// import TestList from './Components/TestList';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    {/* <App /> */}
+    <TodoList />
+    {/* <TestList /> */}
   </React.StrictMode>,
   document.getElementById('root')
 );
