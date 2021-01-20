@@ -9,7 +9,7 @@ export default class TodoList extends Component {
     this.state = {
       todoList: [],
       todoListDone: [],
-      isFilter: false,
+      isFilter: true,
     };
   }
   renderList = () =>
@@ -28,20 +28,34 @@ export default class TodoList extends Component {
         />
       );
     });
+  renderListDone = () =>
+    this.state.todoListDone.map((list, index) => {
+      return (
+        <List
+          index={index}
+          id={list.id}
+          text={list.text}
+          onDelete={this.handleDelete}
+          onUpdate={this.handleUpdate}
+          onTextUpdate={this.handleKeyDown}
+          isUpdate={list.isUpdate}
+          setIsUpdate={this.handleIsUpdate}
+          setIsDone={this.handleIsDone}
+          isDone={list.isDone}
+        />
+      );
+    });
 
   handleFilter = () => {
     if (this.state.isFilter) {
-      let listUpdate = [...this.state.todoList];
-      listUpdate.map((ele) => {
+      let listState = [...this.state.todoList];
+      let listUpdate = [];
+      listState.map((ele) => {
         if (ele.isDone) {
-          this.setState((prevState) => {
-            return {
-              todoListDone: prevState.todoList.concat(ele),
-            };
-          });
+          listUpdate.push(ele);
         }
       });
-      this.renderList(this.state.todoListDone);
+      this.setState({ todoListDone: listUpdate });
     }
     this.setState({ isFilter: !this.state.isFilter });
   };
@@ -65,15 +79,17 @@ export default class TodoList extends Component {
     return this.setState({ todoList: listUpdate });
   };
   handleDelete = (key) => {
-    console.log("key", key);
+    let newToDoListDone = [...this.state.todoListDone];
+    let indexDone = this.state.todoListDone.findIndex((prevKey) => prevKey.id === key);
+    if (indexDone !== -1) {
+      newToDoListDone.splice(indexDone, 1);
+      this.setState({ todoListDone: newToDoListDone });
+    }
     let newToDoList = [...this.state.todoList];
     let index = this.state.todoList.findIndex((prevKey) => prevKey.id === key);
-    console.log(index);
     if (index !== -1) {
       newToDoList.splice(index, 1);
-      console.log(newToDoList);
       this.setState({ todoList: newToDoList });
-      console.log("todoList", this.state.todoList);
     }
   };
 
@@ -104,7 +120,6 @@ export default class TodoList extends Component {
       });
     }
     this.inputElement = "";
-    console.log(this.state.todoList);
     e.preventDefault();
   };
 
@@ -113,16 +128,19 @@ export default class TodoList extends Component {
       <div>
         <div className="parent">
           <form onSubmit={this.addItem}>
-            <div>To do list</div>
+            <div className="header">To do list</div>
             <input
               type="text"
               ref={(a) => (this.inputElement = a)}
               placeholder="To do list"
             />
             <button type="submit">Add Item</button>
+            <Checkbox onChange={this.handleFilter}>
+              Filter done/not done
+            </Checkbox>
           </form>
-          <Checkbox onChange={this.handleFilter} />
-          {this.renderList()}
+          {/* {this.renderList()} */}
+          {!this.state.isFilter ? this.renderListDone() : this.renderList()}
         </div>
       </div>
     );

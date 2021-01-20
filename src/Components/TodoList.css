@@ -1,3 +1,16 @@
 .parent{
-    margin: 10rem;
+    text-align: center;
+    margin: 5rem;
+}
+.header{
+    font-size: 3rem;
+}
+.List-item{
+    margin: 1rem;
+}
+.ant-checkbox{
+    margin-left: 1rem !important;
+}
+.ant-btn-circle{
+    margin: 0rem 1rem;
 }

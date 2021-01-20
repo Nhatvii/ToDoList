@@ -1,34 +1,62 @@
 import React, { useState } from "react";
-import { Button, Checkbox, Input } from "antd";
+import { Button, Checkbox, Input, Switch } from "antd";
+import {
+  CheckCircleOutlined,
+  EditOutlined,
+  CloseCircleOutlined,
+} from "@ant-design/icons";
 import "antd/dist/antd.css";
 
 export default function List(props) {
-  const { id, text, onDelete, onUpdate, isUpdate, setIsUpdate, setIsDone } = props;
-  const [title, settitle] = useState('')
+  const {
+    id,
+    text,
+    onDelete,
+    onUpdate,
+    isUpdate,
+    setIsUpdate,
+    setIsDone,
+    isDone
+  } = props;
+  const [title, settitle] = useState("");
   return (
-    <div>
+    <div className="List-item">
       {!isUpdate ? (
         <div>
-          <Input style={{width: '10rem'}} value={text}></Input>
-          <Checkbox onChange={(event) => setIsDone(event.target.checked, id)} />
-          <Button type="danger" shape="circle" onClick={() => onDelete(id)}>
+          <Input
+            style={{ width: "10rem", marginRight: "6rem" }}
+            value={text}
+          ></Input>
+          <Switch onChange={(checked) => setIsDone(checked, id)}  defaultChecked={isDone}/>
+          <CloseCircleOutlined
+            type="danger"
+            shape="circle"
+            onClick={() => onDelete(id)}
+          >
             X
-          </Button>
-          <Button type="primary" onClick={() => setIsUpdate(true, id)}>
+          </CloseCircleOutlined>
+          <EditOutlined type="primary" onClick={() => setIsUpdate(true, id)}>
             Update
-          </Button>
+          </EditOutlined>
         </div>
       ) : (
         <div>
-          <Input style={{width: '10rem'}} value={text}></Input>
-          <Checkbox onChange={(event) => setIsDone(event.target.checked, id)} />
-          <Button type="danger" shape="circle" onClick={() => onDelete(id)}>
+          <Input style={{ width: "10rem" }} value={text}></Input>
+          <Switch onChange={(checked) => setIsDone(checked, id)}  defaultChecked={isDone}/>
+          <CloseCircleOutlined
+            type="danger"
+            shape="circle"
+            onClick={() => onDelete(id)}
+          >
             X
-          </Button>
-          <Input style={{width: '10rem'}} onChange={event => settitle(event.target.value)} />
-          <Button type="primary" onClick={() => onUpdate(id, title)}>
+          </CloseCircleOutlined>
+          <Input
+            style={{ width: "10rem" }}
+            onChange={(event) => settitle(event.target.value)}
+          />
+          <EditOutlined type="primary" onClick={() => onUpdate(id, title)}>
             Update
-          </Button>
+          </EditOutlined>
         </div>
       )}
     </div>
